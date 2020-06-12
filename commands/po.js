@@ -37,6 +37,7 @@ module.exports = {
         user_name: message.author.username,
         discord_snowflake: message.author.id,
         request_type_id: id,
+        is_alt_request: !!args[0],
         alt_name: args[0],
       };
 
