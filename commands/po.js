@@ -11,11 +11,11 @@ module.exports = {
       return;
     }
 
-    let argument = args[0].toLowerCase();
+    let buffType = args.shift().toLowerCase();
 
-    if (allowedCommands.includes(argument)) {
+    if (allowedCommands.includes(buffType)) {
       let id;
-      switch (argument) {
+      switch (buffType) {
         case '+research':
           id = 1;
           break;
@@ -37,6 +37,7 @@ module.exports = {
         user_name: message.author.username,
         discord_snowflake: message.author.id,
         request_type_id: id,
+        alt_name: args[0],
       };
 
       fetch(`${process.env.DASHBOARD_API_URL}/buff-requests`, {
