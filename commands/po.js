@@ -33,14 +33,19 @@ module.exports = {
           break;
       }
 
+      let altName = null;
+      if (args && args[0]) {
+        altName = args.join(' ');
+      }
+
       const data = {
         user_name: message.author.username,
         discord_snowflake: message.author.id,
         request_type_id: id,
-        is_alt_request: !!args[0],
-        alt_name: args[0],
+        is_alt_request: !!altName,
+        alt_name: altName,
       };
-
+      
       fetch(`${process.env.DASHBOARD_API_URL}/buff-requests`, {
         method: 'POST',
         headers: {
