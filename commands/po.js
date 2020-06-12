@@ -67,7 +67,7 @@ module.exports = {
         }
 
         const data = {
-          user_name: message.member.displayName,
+          user_name: message.member.displayName.replace(/\[\w+\]\s+/gm, ''),
           discord_snowflake: message.author.id,
           request_type_id: id,
           is_alt_request: !!altName,
