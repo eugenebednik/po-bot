@@ -7,7 +7,7 @@ module.exports = {
   execute(message, args) {
     const allowedCommands = ['+training', '+building', '+research', '+lc'];
     if (!args[0]) {
-      message.reply("you must specify a command. Valid commands are `+training`, `+building`, `+research` or `+lc`.");
+      message.reply("you must specify a command. Valid commands are `+training`, `+building`, `+research`, `+lc` or `done`.");
       return;
     }
 
