@@ -18,33 +18,39 @@ module.exports = {
         return;
       }
 
-      const data = {
-        snowflake: message.guild.id,
-        name: message.guild.name,
-      };
+      const webhookName = process.env.WEBHOOK_BOT_NAME;
 
-      fetch(`${process.env.DASHBOARD_URL}/api/server`, {
-        method: 'POST',
-        headers: {
-          "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(data),
+      message.channel.createWebhook(webhookName).then(webhook => {
+        const data = {
+          snowflake: message.guild.id,
+          name: message.guild.name,
+          webhook_id: webhook.id,
+          webhook_token: webhook.token,
+        };
+
+        fetch(`${process.env.DASHBOARD_URL}/api/server`, {
+          method: 'POST',
+          headers: {
+            "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => {
+          status = response.status;
+          return response.json()
+        })
+        .then(json => {
+          if (status === 201) {
+            message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: ${process.env.DASHBOARD_URL}/?server_id=${json.snowflake}`);
+          } else if (status === 409) {
+            message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: ${process.env.DASHBOARD_URL}/?server_id=${json.snowflake} `);
+          } else {
+            message.reply('Something went wrong! Please notify administration ASAP.');
+          }
+        });
       })
-      .then(response => {
-        status = response.status;
-        return response.json()
-      })
-      .then(json => {
-        if (status === 201) {
-          message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: ${process.env.DASHBOARD_URL}/?server_id=${json.snowflake}`);
-        } else if (status === 409) {
-          message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: ${process.env.DASHBOARD_URL}/?server_id=${json.snowflake} `);
-        } else {
-          message.reply('Something went wrong! Please notify administration ASAP.');
-        }
-      });
     }
   }
 }
