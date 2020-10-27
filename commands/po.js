@@ -18,7 +18,7 @@ module.exports = {
         discord_snowflake: message.author.id,
       };
 
-      fetch(`${process.env.DASHBOARD_API_URL}/buff-requests/done`, {
+      fetch(`${process.env.DASHBOARD_URL}/api/buff-requests/done`, {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -34,6 +34,8 @@ module.exports = {
         .then(json => {
           if (status === 201) {
             message.reply('thanks for confirming that you are done!');
+          } else if (status === 422) {
+            message.reply('uh-oh! Something went wrong. Are you sure you have set the Dashboard bot up by running `setup`?');
           } else if (status === 404) {
             message.reply('you have no buff requests in progress.')
           } else {
@@ -74,7 +76,7 @@ module.exports = {
           alt_name: altName,
         };
 
-        fetch(`${process.env.DASHBOARD_API_URL}/buff-requests`, {
+        fetch(`${process.env.DASHBOARD_URL}/api/buff-requests`, {
           method: 'POST',
           headers: {
             "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -92,6 +94,8 @@ module.exports = {
               message.reply('your request for buff has been successfully added to the queue.');
             } else if (status === 400) {
               message.reply('unable to create request: you already have a pending request in the queue. Please wait.');
+            } else if (status === 422) {
+                message.reply('uh-oh! Something went wrong. Are you sure you have set the Dashboard bot up by running `setup`?');
             } else {
               message.reply('uh-oh! Something went wrong. I was unable to create your buff request. Please notify administration.');
             }
