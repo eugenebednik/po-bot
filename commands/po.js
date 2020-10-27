@@ -7,7 +7,7 @@ module.exports = {
   execute(message, args) {
     const allowedCommands = ['+t', '+b', '+r', '+lc'];
     if (!args[0]) {
-      message.reply("you must specify a command. Valid commands are `+t`, `+b`, `+r`, `+lc`, q, or `done`.");
+      message.reply("you must specify a command. Valid commands are `+t`, `+b`, `+r`, `+lc`, `q`, or `done`.");
       return;
     }
 
@@ -156,7 +156,7 @@ module.exports = {
             console.error(err);
           });
       } else {
-        message.reply('command not found. Valid commands are `+training`, `+building`, `+research`, `+lc` or `done`.')
+        message.reply('command not found. Valid commands are `+t`, `+b`, `+r`, `+lc`, `q` or `done`.')
       }
     }
   },
