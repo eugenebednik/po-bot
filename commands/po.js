@@ -7,7 +7,7 @@ module.exports = {
   execute(message, args) {
     const allowedCommands = ['+t', '+b', '+r', '+lc'];
     if (!args[0]) {
-      message.reply("you must specify a command. Valid commands are `+t`, `+b`, `+r`, `+lc` or `done`.");
+      message.reply("you must specify a command. Valid commands are `+t`, `+b`, `+r`, `+lc`, q, or `done`.");
       return;
     }
 
@@ -38,7 +38,55 @@ module.exports = {
           } else if (status === 422) {
             message.reply('uh-oh! Something went wrong. Are you sure you have set the Dashboard bot up by running `setup`?');
           } else if (status === 404) {
-            message.reply('you have no buff requests in progress.')
+            message.reply('you have no buff requests in progress.');
+          } else if (status === 406) {
+            message.reply('no PO is on duty at the moment. Offline queues have been disabled (for now).');
+          } else {
+            message.reply('uh-oh! Something went wrong. I was unable to mark your buff request as completed. Please notify administration!');
+          }
+        });
+    } else if (command === 'q') {
+      fetch(`${process.env.DASHBOARD_URL}/api/queue/${message.guild.id}`, {
+        method: 'GET',
+        headers: {
+          "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
+        },
+      })
+        .then(response => {
+          status = response.status;
+          return response.json()
+        })
+        .then(json => {
+          if (status === 200) {
+            let msg = 'Current Queue:\n'
+            msg += "```css\n";
+
+            msg += '[Grand Maester]\n';
+            json.grand_maester.forEach(person => {
+              msg += `* ${person.user_name}\n`;
+            });
+            msg += "\n"
+
+            msg += '[Chief Builder]\n';
+            json.chief_builder.forEach(person => {
+              msg += `* ${person.user_name}\n`;
+            });
+            msg += "\n"
+
+            msg += '[Master of Whisperers]\n';
+            json.master_of_whisperers.forEach(person => {
+              msg += `* ${person.user_name}\n`;
+            });
+            msg += "\n"
+
+            msg += '[Lord Commander]\n';
+            json.lord_commander.forEach(person => {
+              msg += `* ${person.user_name}\n`;
+            });
+            msg += "```\n"
+
+            message.channel.send(msg);
+
           } else {
             message.reply('uh-oh! Something went wrong. I was unable to mark your buff request as completed. Please notify administration!');
           }
@@ -47,13 +95,13 @@ module.exports = {
       if (allowedCommands.includes(command)) {
         let id;
         switch (command) {
-          case '+research':
+          case '+r':
             id = 1;
             break;
-          case '+building':
+          case '+b':
             id = 2;
             break;
-          case '+training':
+          case '+t':
             id = 3;
             break;
           case '+lc':
@@ -97,7 +145,9 @@ module.exports = {
             } else if (status === 400) {
               message.reply('unable to create request: you already have a pending request in the queue. Please wait.');
             } else if (status === 422) {
-                message.reply('uh-oh! Something went wrong. Are you sure you have set the Dashboard bot up by running `setup`?');
+              message.reply('uh-oh! Something went wrong. Are you sure you have set the Dashboard bot up by running `setup`?');
+            } else if (status === 406) {
+              message.reply('no PO is on duty at the moment. Offline queues have been disabled (for now).');
             } else {
               message.reply('uh-oh! Something went wrong. I was unable to create your buff request. Please notify administration.');
             }
