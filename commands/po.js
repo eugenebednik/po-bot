@@ -5,9 +5,9 @@ module.exports = {
   description: 'Issue a Buff Request to a Protocol Officer.',
   args: true,
   execute(message, args) {
-    const allowedCommands = ['+training', '+building', '+research', '+lc'];
+    const allowedCommands = ['+t', '+b', '+r', '+lc'];
     if (!args[0]) {
-      message.reply("you must specify a command. Valid commands are `+training`, `+building`, `+research`, `+lc` or `done`.");
+      message.reply("you must specify a command. Valid commands are `+t`, `+b`, `+r`, `+lc` or `done`.");
       return;
     }
 
@@ -15,10 +15,11 @@ module.exports = {
 
     if (command === 'done') {
       const data = {
+        server_snowflake: message.guild.id,
         discord_snowflake: message.author.id,
       };
 
-      fetch(`${process.env.DASHBOARD_URL}/api/buff-requests/done`, {
+      fetch(`${process.env.DASHBOARD_URL}/api/requests/done`, {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -69,6 +70,7 @@ module.exports = {
         }
 
         const data = {
+          server_snowflake: message.guild.id,
           user_name: message.member.displayName.replace(/\[\w+\]\s+/gm, ''),
           discord_snowflake: message.author.id,
           request_type_id: id,
@@ -76,7 +78,7 @@ module.exports = {
           alt_name: altName,
         };
 
-        fetch(`${process.env.DASHBOARD_URL}/api/buff-requests`, {
+        fetch(`${process.env.DASHBOARD_URL}/api/requests`, {
           method: 'POST',
           headers: {
             "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,

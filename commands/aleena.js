@@ -37,7 +37,6 @@ module.exports = {
         return response.json()
       })
       .then(json => {
-        console.log(status);
         if (status === 201) {
           message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: ${process.env.DASHBOARD_URL}/?server_id=${json.snowflake}`);
         } else if (status === 409) {
