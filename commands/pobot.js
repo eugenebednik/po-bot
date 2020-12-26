@@ -13,6 +13,8 @@ module.exports = {
     let command = args.shift().toLowerCase();
 
     if (command === 'setup') {
+      console.log(process.env.USE_HTTPS);
+      
       if (!message.member.hasPermission('ADMINISTRATOR')) {
         message.reply("you must have a Server Administrator role to execute this command.");
         return;
