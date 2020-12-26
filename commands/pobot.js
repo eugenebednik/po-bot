@@ -29,7 +29,6 @@ module.exports = {
         };
 
         const url = `${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/server`;
-        console.log(url);
 
         fetch(url, {
           method: 'POST',
@@ -52,7 +51,6 @@ module.exports = {
             message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: ${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${json.name}.${process.env.DASHBOARD_DOMAIN}`);
           } else {
             message.reply('Something went wrong! Please notify administration ASAP.');
-            console.log(json);
           }
         });
       }).catch(err => {
