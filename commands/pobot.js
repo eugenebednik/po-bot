@@ -42,12 +42,14 @@ module.exports = {
           return response.json()
         })
         .then(json => {
-          if (status === 201) {
+          const code = parseInt(status);
+          if (code === 201) {
             message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: ${process.env.USE_HTTPS === true ? 'https://' : 'http://'}${json.name}.${process.env.DASHBOARD_DOMAIN}`);
-          } else if (status === 409) {
+          } else if (code === 409) {
             message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: ${process.env.USE_HTTPS === true ? 'https://' : 'http://'}${json.name}.${process.env.DASHBOARD_DOMAIN}`);
           } else {
             message.reply('Something went wrong! Please notify administration ASAP.');
+            console.log(json);
           }
         });
       }).catch(err => {
