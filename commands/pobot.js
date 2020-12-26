@@ -13,8 +13,6 @@ module.exports = {
     let command = args.shift().toLowerCase();
 
     if (command === 'setup') {
-      console.log(process.env.USE_HTTPS);
-      
       if (!message.member.hasPermission('ADMINISTRATOR')) {
         message.reply("you must have a Server Administrator role to execute this command.");
         return;
@@ -30,7 +28,10 @@ module.exports = {
           webhook_token: webhook.token,
         };
 
-        fetch(`${process.env.USE_HTTPS === true ? 'https://' : 'http://'}${process.env.DASHBOARD_DOMAIN}/api/server`, {
+        const url = `${process.env.USE_HTTPS === true ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/server`;
+        console.log(url);
+
+        fetch(url, {
           method: 'POST',
           headers: {
             "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
