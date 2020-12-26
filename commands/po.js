@@ -19,7 +19,7 @@ module.exports = {
         discord_snowflake: message.author.id,
       };
 
-      fetch(`${process.env.DASHBOARD_URL}/api/requests/done`, {
+      fetch(`${process.env.USE_HTTPS === true ? 'https://' : 'http://'}${process.env.DASHBOARD_DOMAIN}/api/bot-requests/done`, {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -48,7 +48,7 @@ module.exports = {
           }
         });
     } else if (command === 'q') {
-      fetch(`${process.env.DASHBOARD_URL}/api/queue/${message.guild.id}`, {
+      fetch(`${process.env.USE_HTTPS === true ? 'https://' : 'http://'}${process.env.DASHBOARD_DOMAIN}/api/queue/${message.guild.id}`, {
         method: 'GET',
         headers: {
           "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -130,7 +130,7 @@ module.exports = {
           alt_name: altName,
         };
 
-        fetch(`${process.env.DASHBOARD_URL}/api/requests`, {
+        fetch(`${process.env.USE_HTTPS === true ? 'https://' : 'http://'}${process.env.DASHBOARD_DOMAIN}/api/bot-requests`, {
           method: 'POST',
           headers: {
             "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -144,15 +144,18 @@ module.exports = {
             return response.json()
           })
           .then(json => {
-            if (status === 201) {
+            const code = parseInt(status);
+
+            if (code === 201) {
               message.reply('your request for buff has been successfully added to the queue.');
-            } else if (status === 400) {
+            } else if (code === 400) {
               message.reply('unable to create request: you already have a pending request in the queue. Please wait.');
-            } else if (status === 422) {
+            } else if (code === 422) {
               message.reply('uh-oh! Something went wrong. Are you sure you have set the Dashboard bot up by running `setup`?');
-            } else if (status === 406) {
+            } else if (code === 406) {
               message.reply('no PO is on duty at the moment. Offline queues have been disabled (for now).');
             } else {
+              console.log(json);
               message.reply('uh-oh! Something went wrong. I was unable to create your buff request. Please notify administration.');
             }
           })
