@@ -33,13 +33,15 @@ module.exports = {
           return response.json()
         })
         .then(json => {
-          if (status === 201) {
+          const code = parseInt(status);
+
+          if (code === 201) {
             message.reply('thanks for confirming that you are done!');
-          } else if (status === 422) {
+          } else if (code === 422) {
             message.reply('uh-oh! Something went wrong. Are you sure you have set the Dashboard bot up by running `setup`?');
-          } else if (status === 404) {
+          } else if (code === 404) {
             message.reply('you have no buff requests in progress.');
-          } else if (status === 406) {
+          } else if (code === 406) {
             message.reply('no PO is on duty at the moment. Offline queues have been disabled (for now).');
           } else {
             message.reply('uh-oh! Something went wrong. I was unable to mark your buff request as completed. Please notify administration!');
@@ -57,7 +59,9 @@ module.exports = {
           return response.json()
         })
         .then(json => {
-          if (status === 200) {
+          const code = parseInt(status);
+
+          if (code === 200) {
             let msg = 'Current Queue:\n'
             msg += "```css\n";
 

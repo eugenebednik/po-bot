@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 
 module.exports = {
-  name: 'aleena',
-  description: 'Setup AleenaBot PO Dashboard!',
+  name: 'pobot',
+  description: 'Setup POBot PO Dashboard!',
   args: true,
   execute(message, args) {
     if (!args[0]) {
