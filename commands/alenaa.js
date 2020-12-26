@@ -43,9 +43,9 @@ module.exports = {
         })
         .then(json => {
           if (status === 201) {
-            message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: ${process.env.DASHBOARD_URL}/?server_id=${json.snowflake}`);
+            message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: https://${json.name}.${process.env.DASHBOARD_DOMAIN}`);
           } else if (status === 409) {
-            message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: ${process.env.DASHBOARD_URL}/?server_id=${json.snowflake} `);
+            message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: https://${json.name}.${process.env.DASHBOARD_DOMAIN}`);
           } else {
             message.reply('Something went wrong! Please notify administration ASAP.');
           }
