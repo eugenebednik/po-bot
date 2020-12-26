@@ -28,7 +28,7 @@ module.exports = {
           webhook_token: webhook.token,
         };
 
-        const url = `${process.env.USE_HTTPS ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/server`;
+        const url = `${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/server`;
         console.log(url);
 
         fetch(url, {
@@ -47,9 +47,9 @@ module.exports = {
         .then(json => {
           const code = parseInt(status);
           if (code === 201) {
-            message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: ${process.env.USE_HTTPS ? 'https' : 'http'}://${json.name}.${process.env.DASHBOARD_DOMAIN}`);
+            message.reply(`Thank you for inviting me into the server. Please follow the following URL to set up your Dashboard: ${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${json.name}.${process.env.DASHBOARD_DOMAIN}`);
           } else if (code === 409) {
-            message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: ${process.env.USE_HTTPS ? 'https' : 'http'}://${json.name}.${process.env.DASHBOARD_DOMAIN}`);
+            message.reply(`You've already set up your bot on this server. Use the following URL to login to your Dashboard: ${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${json.name}.${process.env.DASHBOARD_DOMAIN}`);
           } else {
             message.reply('Something went wrong! Please notify administration ASAP.');
             console.log(json);

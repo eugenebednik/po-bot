@@ -19,7 +19,7 @@ module.exports = {
         discord_snowflake: message.author.id,
       };
 
-      fetch(`${process.env.USE_HTTPS ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/bot-requests/done`, {
+      fetch(`${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/bot-requests/done`, {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -48,7 +48,7 @@ module.exports = {
           }
         });
     } else if (command === 'q') {
-      fetch(`${process.env.USE_HTTPS ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/queue/${message.guild.id}`, {
+      fetch(`${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/queue/${message.guild.id}`, {
         method: 'GET',
         headers: {
           "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
