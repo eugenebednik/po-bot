@@ -28,7 +28,7 @@ module.exports = {
           webhook_token: webhook.token,
         };
 
-        const url = `${process.env.USE_HTTPS === true ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/server`;
+        const url = `${process.env.USE_HTTPS ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/server`;
         console.log(url);
 
         fetch(url, {
