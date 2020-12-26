@@ -130,7 +130,7 @@ module.exports = {
           alt_name: altName,
         };
 
-        fetch(`${process.env.USE_HTTPS === true ? 'https://' : 'http://'}${process.env.DASHBOARD_DOMAIN}/api/bot-requests`, {
+        fetch(`${parseInt(process.env.USE_HTTPS) === 1 ? 'https' : 'http'}://${process.env.DASHBOARD_DOMAIN}/api/bot-requests`, {
           method: 'POST',
           headers: {
             "Authorization": `Bearer ${process.env.DASHBOARD_API_TOKEN}`,
@@ -155,7 +155,6 @@ module.exports = {
             } else if (code === 406) {
               message.reply('no PO is on duty at the moment. Offline queues have been disabled (for now).');
             } else {
-              console.log(json);
               message.reply('uh-oh! Something went wrong. I was unable to create your buff request. Please notify administration.');
             }
           })
