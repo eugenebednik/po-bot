@@ -147,7 +147,7 @@ module.exports = {
             const code = parseInt(status);
 
             if (code === 201) {
-              message.reply('your request for buff has been successfully added to the queue.');
+              message.reply(`your request for buff has been successfully added to the queue. <@${json.server.on_duty.user.discord_id}> please look at the dashboard and assign the title.`);
             } else if (code === 400) {
               message.reply('unable to create request: you already have a pending request in the queue. Please wait.');
             } else if (code === 422) {
